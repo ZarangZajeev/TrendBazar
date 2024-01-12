@@ -17,11 +17,11 @@ class ProductSerializer(serializers.ModelSerializer):
         model=Product
         fields="__all__"
         read_only_fields=["id","category"]
-
     category=serializers.StringRelatedField()
 
 class BasketItemSerializer(serializers.ModelSerializer):
-    product=serializers.StringRelatedField()
+    total=serializers.IntegerField(read_only=True)
+    product=ProductSerializer(read_only=True)
     class Meta:
         model=BasketItem
         fields="__all__"
@@ -34,3 +34,20 @@ class BasketItemSerializer(serializers.ModelSerializer):
                             "updated_at",
                             "total"
                         ]
+
+class BasketSeriliazer(serializers.ModelSerializer):
+    cart_items=BasketItemSerializer(read_only=True,many=True)
+    basket_total=serializers.IntegerField(read_only=True)
+    owner=serializers.StringRelatedField()
+
+    class Meta:
+        model=Basket
+        fields="__all__"
+        read_only_fields=[
+                          "id",
+                          "owner",
+                          "is_active",
+                          "created_at",
+                          "updated_at",
+                          "cart_items"
+                          ]

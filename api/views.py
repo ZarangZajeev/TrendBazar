@@ -6,8 +6,8 @@ from rest_framework import serializers
 from rest_framework import authentication, permissions
 from rest_framework.decorators import action
 
-from api.serializers import UserSerializer,ProductSerializer,BasketItemSerializer
-from api.models import Product
+from api.serializers import UserSerializer,ProductSerializer,BasketItemSerializer,BasketSeriliazer
+from api.models import Product,BasketItem
 # Create your views here.
 
 
@@ -18,7 +18,8 @@ class SiginUpView(APIView):
             serializer.save()
             return Response(data=serializer.data)
         return Response(data=serializer.errors)
-    
+
+# url:http://127.0.0.1:8000/api/products/ 
 class ProductView(viewsets.ModelViewSet):
     authentication_classes=[authentication.TokenAuthentication]
     permission_classes=[permissions.IsAuthenticated]
@@ -48,3 +49,24 @@ class ProductView(viewsets.ModelViewSet):
             return Response(data=serializer.data)
         return Response(data=serializer.errors)
         
+
+# url:http://127.0.0.1:8000/api/baskets/
+class BasketView(viewsets.ViewSet):
+    authentication_classes=[authentication.TokenAuthentication]
+    permission_classes=[permissions.IsAuthenticated]
+
+
+    def list(self,request,*args,**kwargs):
+        qs=request.user.cart
+        serializer=BasketSeriliazer(qs,many=False)
+        return Response(data=serializer.data)
+    
+class BasketItemView(viewsets.ModelViewSet):
+    authentication_classes=[authentication.TokenAuthentication]
+    permission_classes=[permissions.IsAuthenticated]
+
+    serializer_class=BasketItemSerializer
+    queryset=BasketItem.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        raise serializers.ValidationError("Permission Deneid")

@@ -31,3 +31,27 @@
     method:post
     data:{qty}
     authorization:Token
+
+6.list basket item of authenticated user with number of items in theire basket
+    url:http://127.0.0.1:8000/api/baskets/
+    method:get
+    data:nill
+    authorization:Token
+
+7, Api for fetching a basket item details
+    url:http://127.0.0.1:8000/api/baskets/item/{id}/
+    method:get
+    data:
+    authorization:Token
+
+8, Api for update a basket item
+    url:http://127.0.0.1:8000/api/baskets/item/{id}/
+    method:put
+    data: {qty}
+    authorization:Token
+
+9, Api for delete a basket item
+    url:http://127.0.0.1:8000/api/baskets/item/{id}/
+    method:delete
+    data: nill
+    authorization:Token
